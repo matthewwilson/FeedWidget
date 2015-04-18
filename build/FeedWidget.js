@@ -37,7 +37,7 @@ var LiveAlert = React.createClass({displayName: "LiveAlert",
 
           return (
             React.createElement("div", null, 
-              React.createElement("h1", null, title), 
+              React.createElement("a", {href: item.link}, React.createElement("h1", null, title)), 
               React.createElement("p", null, description)
             )
           );

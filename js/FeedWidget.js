@@ -37,7 +37,7 @@ var LiveAlert = React.createClass({
 
           return (
             <div>
-              <h1>{title}</h1>
+              <a href={item.link}><h1>{title}</h1></a>
               <p>{description}</p>
             </div>
           );
