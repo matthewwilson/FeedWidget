@@ -9,7 +9,7 @@ var LiveAlert = React.createClass({
     var widget = this;
 
     jQuery.getFeed({
-      url: 'http://matthewcodes.github.io/atom.xml',
+      url: this.props.url,
       success: function(feed) {
 
         if(widget.isMounted()) {
@@ -21,14 +21,26 @@ var LiveAlert = React.createClass({
       }
     });
   },
+  removeCdata : function(text) {
+    return text.replace("<![CDATA[", "").replace("]]>","").trim();
+  },
   render : function() {
 
     if(this.state.data) {
 
+      var widget = this;
       var items = this.state.data.items.map(function(item) {
-            return (
-              <p>{item.title}</p>
-            );
+
+          var title = widget.removeCdata(item.title);
+          var description = widget.removeCdata(item.description);
+          description = description.substring(0, widget.props.lengthOfExcerpt);
+
+          return (
+            <div>
+              <h1>{title}</h1>
+              <p>{description}</p>
+            </div>
+          );
       });
 
       return(
@@ -37,12 +49,12 @@ var LiveAlert = React.createClass({
         </div>
       );
     } else {
-      return (<div></div>);
+      return (<div><p>Loading Posts</p></div>);
     }
   }
 });
 
 React.render(
-  <LiveAlert/>,
+  <LiveAlert url="http://matthewcodes.github.io/atom.xml" lengthOfExcerpt="78"/>,
   document.getElementById('feed')
 );
